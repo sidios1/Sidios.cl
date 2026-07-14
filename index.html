@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pablo Peña — Ingeniería Civil Informática · sidios</title>
+  <meta name="description" content="Pablo Peña — estudiante de Ingeniería Civil Informática (UCSC). Entre construir sistemas y acompañar personas.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      /* Acento en reposo (H≈202, teal). El lever lo reescribe en tiempo real
+         sobre .content; el nav conserva este valor fijo. */
+      --accent: oklch(0.56 0.11 202);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #f7f7f9;
+      color: #17171c;
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.5;
+    }
+    a { color: inherit; text-decoration: none; }
+    ::selection { background: color-mix(in oklab, var(--accent) 28%, transparent); }
+
+    .mono { font-family: 'JetBrains Mono', monospace; }
+    .display { font-family: 'Space Grotesk', sans-serif; }
+    .wrap { max-width: 1100px; margin: 0 auto; }
+
+    /* ===================== NAV ===================== */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; height: 60px;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 32px;
+      background: rgba(247,247,249,0.82);
+      backdrop-filter: saturate(140%) blur(10px);
+      -webkit-backdrop-filter: saturate(140%) blur(10px);
+      border-bottom: 1px solid #e6e6ec;
+      z-index: 50;
+    }
+    .nav-brand {
+      font-family: 'JetBrains Mono', monospace; font-weight: 500; font-size: 15px;
+      letter-spacing: 0.18em; text-transform: uppercase;
+    }
+    .nav-links {
+      display: flex; gap: 26px;
+      font-family: 'JetBrains Mono', monospace; font-size: 11px;
+      letter-spacing: 0.08em; text-transform: uppercase; color: #6b6b76;
+    }
+    .nav-links a { transition: color .2s; }
+    .nav-links a:hover { color: var(--accent); }
+
+    /* Envoltura de contenido: el lever escribe --accent y filter aquí (inline). */
+    .content { transition: filter .12s linear; }
+
+    /* ===================== HERO ===================== */
+    header#top {
+      display: flex; flex-wrap: wrap; gap: 64px; align-items: flex-start;
+      padding: 148px 32px 96px;
+    }
+    .hero-main { flex: 2 1 380px; min-width: 320px; }
+    .eyebrow {
+      font-family: 'JetBrains Mono', monospace; font-size: 12px;
+      letter-spacing: 0.12em; text-transform: uppercase; color: #6b6b76;
+      margin-bottom: 28px;
+    }
+    .hero-name {
+      font-family: 'Space Grotesk', sans-serif; font-weight: 600;
+      font-size: clamp(52px, 8.5vw, 116px); line-height: 0.94;
+      letter-spacing: -0.035em; margin: 0 0 32px;
+    }
+    .hero-tagline {
+      font-size: clamp(20px, 2.6vw, 30px); line-height: 1.34; max-width: 20ch;
+      margin: 0; letter-spacing: -0.01em;
+    }
+    .hero-tagline .pole { color: var(--accent); font-weight: 500; }
+
+    /* ===== el lever ===== */
+    .lever { margin-top: 56px; max-width: 460px; }
+    .lever-labels {
+      display: flex; justify-content: space-between;
+      font-family: 'JetBrains Mono', monospace; font-size: 12px;
+      letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 16px;
+    }
+    .lever-labels .r { text-align: right; }
+    .lever-track {
+      position: relative; height: 30px; cursor: ew-resize;
+      touch-action: none; outline: none;
+    }
+    .lever-rail {
+      position: absolute; top: 50%; left: 0; right: 0; height: 1px;
+      background: #d3d3db; transform: translateY(-50%);
+    }
+    .lever-knob {
+      position: absolute; top: 50%; width: 18px; height: 18px;
+      border-radius: 50%; background: var(--accent);
+      transform: translate(-50%, -50%);
+      box-shadow: 0 0 0 5px color-mix(in oklab, var(--accent) 16%, transparent);
+      transition: box-shadow .2s;
+    }
+    .lever-hint {
+      font-family: 'JetBrains Mono', monospace; font-size: 10.5px;
+      letter-spacing: 0.08em; color: #9a9aa3; margin-top: 12px;
+    }
+
+    .hero-photo { flex: 1 1 260px; min-width: 240px; max-width: 340px; }
+    .hero-photo-frame {
+      aspect-ratio: 4/5; width: 100%; border: 1px solid #e0e0e7; overflow: hidden;
+    }
+    .hero-photo-frame img {
+      width: 100%; height: 100%; object-fit: cover;
+      object-position: center 20%; display: block; filter: contrast(1.02);
+    }
+
+    /* ===================== SECCIONES ===================== */
+    section { scroll-margin-top: 80px; border-top: 1px solid #e6e6ec; }
+    .sec-2col {
+      display: flex; flex-wrap: wrap; gap: 64px; padding: 112px 32px;
+    }
+    .sec-aside { flex: 1 1 240px; min-width: 220px; }
+    .sec-label {
+      font-family: 'JetBrains Mono', monospace; font-size: 12px;
+      letter-spacing: 0.12em; color: var(--accent); text-transform: uppercase;
+      position: sticky; top: 92px;
+    }
+    .sec-body { flex: 2 1 480px; min-width: 320px; max-width: 640px; }
+
+    /* Sobre mí */
+    .about-body { font-size: clamp(17px, 1.7vw, 20px); line-height: 1.62; color: #2c2c34; }
+    .about-body p { margin: 0 0 26px; }
+    .about-body p:last-of-type { margin: 0; }
+    .stack {
+      margin-top: 44px; padding-top: 32px; border-top: 1px solid #e6e6ec;
+    }
+    .stack-label {
+      font-family: 'JetBrains Mono', monospace; font-size: 11px;
+      letter-spacing: 0.12em; color: #9a9aa3; text-transform: uppercase;
+      margin-bottom: 18px;
+    }
+    .chips {
+      display: flex; flex-wrap: wrap; gap: 8px;
+      font-family: 'JetBrains Mono', monospace; font-size: 12px;
+      letter-spacing: 0.02em; color: #3c3c44;
+    }
+    .chips span { border: 1px solid #dcdce3; padding: 6px 11px; border-radius: 2px; }
+
+    /* Proyectos */
+    .proj-wrap { padding: 112px 32px; }
+    .sec-label-block {
+      font-family: 'JetBrains Mono', monospace; font-size: 12px;
+      letter-spacing: 0.12em; color: var(--accent); text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+    .proj {
+      display: block; border-top: 1px solid #e6e6ec; padding: 32px 0;
+      transition: padding-left .25s; cursor: default;
+    }
+    .proj:last-of-type { border-bottom: 1px solid #e6e6ec; }
+    .proj:hover { padding-left: 14px; }
+    .proj-row { display: flex; flex-wrap: wrap; gap: 28px; align-items: baseline; }
+    .proj-idx {
+      font-family: 'JetBrains Mono', monospace; font-size: 12px;
+      color: #9a9aa3; flex: 0 0 auto;
+    }
+    .proj-mid { flex: 1 1 320px; min-width: 260px; }
+    .proj-kicker {
+      font-family: 'JetBrains Mono', monospace; font-size: 10.5px;
+      letter-spacing: 0.08em; color: var(--accent); text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .proj-title {
+      font-family: 'Space Grotesk', sans-serif; font-weight: 500;
+      font-size: clamp(22px, 2.6vw, 30px); letter-spacing: -0.02em; margin: 0 0 10px;
+    }
+    .proj-desc { margin: 0; font-size: 16px; color: #5a5a63; max-width: 52ch; }
+    .tags {
+      flex: 0 0 auto; display: flex; gap: 8px;
+      font-family: 'JetBrains Mono', monospace; font-size: 10.5px;
+      letter-spacing: 0.05em; color: #6b6b76; text-transform: uppercase;
+    }
+    .tags span { border: 1px solid #dcdce3; padding: 4px 9px; border-radius: 2px; }
+
+    /* Experiencia */
+    .exp-item {
+      padding-bottom: 30px; margin-bottom: 30px; border-bottom: 1px solid #e6e6ec;
+    }
+    .exp-item.wide { padding-bottom: 34px; margin-bottom: 34px; }
+    .exp-head {
+      display: flex; flex-wrap: wrap; justify-content: space-between;
+      gap: 8px; margin-bottom: 8px;
+    }
+    .exp-facet {
+      font-family: 'JetBrains Mono', monospace; font-size: 11px;
+      letter-spacing: 0.08em; color: var(--accent); text-transform: uppercase;
+    }
+    .exp-date { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #9a9aa3; }
+    .exp-title {
+      font-family: 'Space Grotesk', sans-serif; font-weight: 500;
+      font-size: 22px; letter-spacing: -0.015em; margin: 0 0 6px;
+    }
+    .exp-desc { margin: 0; font-size: 16px; color: #5a5a63; }
+
+    /* Educación y certificaciones */
+    .edu-block {
+      padding-bottom: 34px; margin-bottom: 20px; border-bottom: 1px solid #e6e6ec;
+    }
+    .edu-label {
+      font-family: 'JetBrains Mono', monospace; font-size: 11px;
+      letter-spacing: 0.08em; color: var(--accent); text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .edu-title {
+      font-family: 'Space Grotesk', sans-serif; font-weight: 500;
+      font-size: 22px; letter-spacing: -0.015em; margin: 0 0 6px;
+    }
+    .edu-desc { margin: 0; font-size: 16px; color: #5a5a63; }
+    .cert-heading {
+      font-family: 'JetBrains Mono', monospace; font-size: 11px;
+      letter-spacing: 0.12em; color: #9a9aa3; text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .cert {
+      display: flex; flex-wrap: wrap; justify-content: space-between;
+      gap: 12px 24px; align-items: baseline; padding: 18px 0;
+      border-top: 1px solid #e6e6ec;
+    }
+    .cert:last-of-type { border-bottom: 1px solid #e6e6ec; }
+    .cert-info { flex: 1 1 300px; min-width: 240px; }
+    .cert-name {
+      font-family: 'Space Grotesk', sans-serif; font-weight: 500;
+      font-size: 18px; letter-spacing: -0.01em; margin: 0 0 3px;
+    }
+    .cert-issuer { font-size: 14px; color: #6b6b76; }
+    .cert-date { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #9a9aa3; }
+
+    /* Contacto */
+    .contact-wrap { padding: 128px 32px 96px; }
+    .contact-label {
+      font-family: 'JetBrains Mono', monospace; font-size: 12px;
+      letter-spacing: 0.12em; color: var(--accent); text-transform: uppercase;
+      margin-bottom: 40px;
+    }
+    .contact-h {
+      font-family: 'Space Grotesk', sans-serif; font-weight: 600;
+      font-size: clamp(44px, 8vw, 96px); letter-spacing: -0.03em;
+      line-height: 0.98; margin: 0 0 48px;
+    }
+    .contact-links { display: flex; flex-wrap: wrap; gap: 40px; }
+    .contact-links a {
+      font-family: 'JetBrains Mono', monospace; font-size: 14px;
+      letter-spacing: 0.04em; border-bottom: 1px solid #cfcfd6; padding-bottom: 6px;
+      transition: color .2s, border-color .2s;
+    }
+    .contact-links a:hover { color: var(--accent); border-color: var(--accent); }
+
+    /* Footer */
+    footer { border-top: 1px solid #e6e6ec; }
+    .footer-inner {
+      padding: 28px 32px; display: flex; flex-wrap: wrap;
+      justify-content: space-between; gap: 12px;
+      font-family: 'JetBrains Mono', monospace; font-size: 11px;
+      letter-spacing: 0.06em; color: #9a9aa3; text-transform: uppercase;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .content, .proj, .lever-knob { transition: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="#top" class="nav-brand">sidios</a>
+    <div class="nav-links">
+      <a href="#sobre">Sobre mí</a>
+      <a href="#proyectos">Proyectos</a>
+      <a href="#experiencia">Experiencia</a>
+      <a href="#certificaciones">Formación</a>
+      <a href="#contacto">Contacto</a>
+    </div>
+  </nav>
+
+  <div class="content" id="content">
+
+    <!-- ===================== HERO ===================== -->
+    <header id="top" class="wrap">
+      <div class="hero-main">
+        <div class="eyebrow">Ingeniería Civil Informática · UCSC · Concepción, Chile</div>
+        <h1 class="hero-name">Pablo Peña</h1>
+        <p class="hero-tagline">
+          Entre <span class="pole">construir sistemas</span> y <span class="pole">acompañar personas</span>.
+        </p>
+
+        <!-- ===== gesto interactivo: el lever ===== -->
+        <div class="lever">
+          <div class="lever-labels">
+            <span id="lbl-sys">Sistemas</span>
+            <span id="lbl-per" class="r">Personas</span>
+          </div>
+          <div id="track" class="lever-track" tabindex="0" role="slider"
+               aria-label="Tensión entre construir sistemas y acompañar personas"
+               aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
+            <div class="lever-rail"></div>
+            <div id="knob" class="lever-knob"></div>
+          </div>
+          <div class="lever-hint">↔ arrastra — la tensión que define cómo trabajo</div>
+        </div>
+      </div>
+
+      <div class="hero-photo">
+        <div class="hero-photo-frame">
+          <img src="assets/pablo.png" alt="Retrato de Pablo Peña" />
+        </div>
+      </div>
+    </header>
+
+    <!-- ===================== SOBRE MÍ ===================== -->
+    <section id="sobre">
+      <div class="wrap sec-2col">
+        <div class="sec-aside"><div class="sec-label">01 — Sobre mí</div></div>
+        <div class="sec-body about-body">
+          <p>Soy Pablo Peña, estudiante de Ingeniería Civil Informática en la Universidad Católica de la Santísima Concepción. Mi trabajo se mueve entre dos ámbitos que se complementan: el desarrollo de soluciones tecnológicas y el acompañamiento en procesos de aprendizaje.</p>
+          <p>En el ámbito técnico, me he enfocado en plataformas de datos y automatización: desde soluciones de Business Intelligence y procesos ETL, hasta el desarrollo de sitios web y asistentes basados en inteligencia artificial. Disfruto especialmente los proyectos donde la tecnología simplifica procesos que antes dependían de trabajo manual o conocimiento muy especializado.</p>
+          <p>En paralelo, ejerzo como tutor universitario y participo en iniciativas de difusión académica. Me interesan profundamente las relaciones humanas y cómo estas influyen en el desarrollo profesional y personal de las personas; ayudar a otros a crecer es algo que me mueve genuinamente, más allá de cualquier herramienta o tecnología que use en el camino.</p>
+          <p>Esta doble trayectoria —construir sistemas y acompañar procesos de aprendizaje— define la forma en que abordo cada proyecto: con rigor técnico y con atención a las personas que usan o aprenden de lo que se construye.</p>
+
+          <div class="stack">
+            <div class="stack-label">Stack</div>
+            <div class="chips">
+              <span>Python</span>
+              <span>Scikit-learn</span>
+              <span>NLTK / NLP</span>
+              <span>Machine Learning</span>
+              <span>RAG</span>
+              <span>Prompt Engineering</span>
+              <span>ETL</span>
+              <span>Business Intelligence</span>
+              <span>Astro</span>
+              <span>Tailwind</span>
+              <span>VPS Windows</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== PROYECTOS ===================== -->
+    <section id="proyectos">
+      <div class="wrap proj-wrap">
+        <div class="sec-label-block">02 — Proyectos</div>
+
+        <a href="#proyectos" class="proj">
+          <div class="proj-row">
+            <span class="proj-idx">P·01</span>
+            <div class="proj-mid">
+              <div class="proj-kicker">Líder de equipo</div>
+              <h3 class="proj-title">BlackBox</h3>
+              <p class="proj-desc">Aplicación ETL para automatizar procesos contables, con conexión directa al SII. Descarga, procesa, edita y exporta registros en un formato compatible con el software contable — automatizando el manejo de grandes volúmenes de información.</p>
+            </div>
+            <div class="tags"><span>SII</span><span>ETL</span></div>
+          </div>
+        </a>
+
+        <a href="#proyectos" class="proj">
+          <div class="proj-row">
+            <span class="proj-idx">P·02</span>
+            <div class="proj-mid">
+              <div class="proj-kicker">Líder de equipo</div>
+              <h3 class="proj-title">Intrava-B8 — Plataforma de BI</h3>
+              <p class="proj-desc">Con módulo ETL no-code para archivos Excel de empresas mineras. Datos crudos convertidos en decisiones, sin depender de trabajo manual.</p>
+            </div>
+            <div class="tags"><span>ETL</span><span>BI</span></div>
+          </div>
+        </a>
+
+        <a href="#proyectos" class="proj">
+          <div class="proj-row">
+            <span class="proj-idx">P·03</span>
+            <div class="proj-mid">
+              <div class="proj-kicker">Líder de equipo</div>
+              <h3 class="proj-title">Asistente con IA — RAG local</h3>
+              <p class="proj-desc">Diagnóstico de errores en procesos contables mediante recuperación aumentada. Conocimiento especializado, al alcance de más personas.</p>
+            </div>
+            <div class="tags"><span>RAG</span><span>IA</span></div>
+          </div>
+        </a>
+
+        <a href="#proyectos" class="proj">
+          <div class="proj-row">
+            <span class="proj-idx">P·04</span>
+            <div class="proj-mid">
+              <div class="proj-kicker">Programador junior</div>
+              <h3 class="proj-title">Data sintética de refinería de petróleo</h3>
+              <p class="proj-desc">Scripts en Python que generan datos sintéticos de una refinería de petróleo a partir de reglas físicas, para entrenar y validar modelos de machine learning y análisis cuando los datos reales escasean.</p>
+            </div>
+            <div class="tags"><span>Python</span><span>ML</span></div>
+          </div>
+        </a>
+
+        <a href="#proyectos" class="proj">
+          <div class="proj-row">
+            <span class="proj-idx">P·05</span>
+            <div class="proj-mid">
+              <div class="proj-kicker">Programador junior</div>
+              <h3 class="proj-title">Adkintum</h3>
+              <p class="proj-desc">Plataforma de predicción, mediante machine learning, de emergencias ambientales en una refinería de petróleo.</p>
+            </div>
+            <div class="tags"><span>ML</span><span>Refinería</span></div>
+          </div>
+        </a>
+
+        <a href="#proyectos" class="proj">
+          <div class="proj-row">
+            <span class="proj-idx">P·06</span>
+            <div class="proj-mid">
+              <div class="proj-kicker">Líder de equipo</div>
+              <h3 class="proj-title">Sitio web corporativo — Quantum Consulting</h3>
+              <p class="proj-desc">Remodelación completa del sitio: rediseño de interfaces y de la estructura de navegación para reflejar mejor la identidad y los servicios de la consultora.</p>
+            </div>
+            <div class="tags"><span>Web</span><span>UI</span></div>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- ===================== EXPERIENCIA ===================== -->
+    <section id="experiencia">
+      <div class="wrap sec-2col">
+        <div class="sec-aside"><div class="sec-label">03 — Experiencia</div></div>
+        <div class="sec-body">
+
+          <div class="exp-item">
+            <div class="exp-head">
+              <span class="exp-facet">Sistemas</span>
+              <span class="exp-date">mar. 2026 — actualidad</span>
+            </div>
+            <h3 class="exp-title">Analista Funcional TI — Quantum Consulting</h3>
+            <p class="exp-desc">Levantamiento de requerimientos, optimización de procesos e implementación de soluciones TI para automatización, integración y análisis de datos. Vínculo entre las necesidades operativas y las soluciones tecnológicas en plataformas de gestión y contabilidad.</p>
+          </div>
+
+          <div class="exp-item">
+            <div class="exp-head">
+              <span class="exp-facet">Sistemas</span>
+              <span class="exp-date">dic. 2025 — feb. 2026</span>
+            </div>
+            <h3 class="exp-title">Práctica profesional — Quantum Consulting</h3>
+            <p class="exp-desc">500 horas. Construí la plataforma de integración BlackBox (arquitectura e interfaz), lideré la remodelación del sitio corporativo, implementé un VPS Windows con escritorio remoto para trabajo contable seguro y desarrollé scripts en Python de data sintética basada en reglas físicas para modelos de machine learning.</p>
+          </div>
+
+          <div class="exp-item">
+            <div class="exp-head">
+              <span class="exp-facet">Personas</span>
+              <span class="exp-date">desde 2023</span>
+            </div>
+            <h3 class="exp-title">Tutor universitario — UCSC</h3>
+            <p class="exp-desc">Lógica y Estructuras Discretas (desde abr. 2023) · Fundamentos de Mecánica (desde abr. 2026). Tutor certificado por la Dirección de Innovación UCSC.</p>
+          </div>
+
+          <div class="exp-item">
+            <div class="exp-head">
+              <span class="exp-facet">Personas</span>
+              <span class="exp-date">jun. — ago. 2024</span>
+            </div>
+            <h3 class="exp-title">Líder de alfabetización digital — U. Santo Tomás</h3>
+            <p class="exp-desc">Lideré un equipo de cuatro estudiantes UCSC en un taller para adultos mayores: 9 sesiones enseñando el uso de aplicaciones móviles básicas, acompañándolos para que se sintieran más seguros con la tecnología.</p>
+          </div>
+
+          <div class="exp-item">
+            <div class="exp-head">
+              <span class="exp-facet">Sistemas · Personas</span>
+              <span class="exp-date">2026</span>
+            </div>
+            <h3 class="exp-title">3er lugar — Open Innovation AVA × UCSC</h3>
+            <p class="exp-desc">Líder de equipo. Propuesta de una plataforma con IA para monitorear el avance de proyectos y anticipar desviaciones.</p>
+          </div>
+
+          <div class="exp-item wide">
+            <div class="exp-head">
+              <span class="exp-facet">Personas</span>
+              <span class="exp-date">XI Encuentro Nal. Tutores Pares</span>
+            </div>
+            <h3 class="exp-title">Ponencia — Uso ético de la IA</h3>
+            <p class="exp-desc">«Uso especializado de la IA: autonomía en el aprendizaje de los tutorados». Sobre cómo la IA, con criterio pedagógico, amplía el proceso formativo sin reemplazar al tutor.</p>
+          </div>
+
+          <div class="exp-item wide">
+            <div class="exp-head">
+              <span class="exp-facet">Sistemas · Personas</span>
+              <span class="exp-date">2025 — 2026 · independiente</span>
+            </div>
+            <h3 class="exp-title">Reparación y asesoría en computación</h3>
+            <p class="exp-desc">Emprendimiento independiente: cambio de componentes, instalación de programas, mantención y limpieza de equipos, y asesoría cercana para que cada cliente entendiera y aprovechara mejor su computador.</p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== EDUCACIÓN Y CERTIFICACIONES ===================== -->
+    <section id="certificaciones">
+      <div class="wrap sec-2col">
+        <div class="sec-aside"><div class="sec-label">04 — Educación y certificaciones</div></div>
+        <div class="sec-body">
+
+          <div class="edu-block">
+            <div class="edu-label">Educación</div>
+            <h3 class="edu-title">Ingeniería Civil Informática — UCSC</h3>
+            <p class="edu-desc">En curso · 5° año · titulación esperada 2027. Tutor certificado por la Dirección de Innovación UCSC.</p>
+          </div>
+
+          <div class="cert-heading">Certificaciones</div>
+
+          <div class="cert">
+            <div class="cert-info">
+              <h3 class="cert-name">Claude Code 101</h3>
+              <span class="cert-issuer">Anthropic — Ingeniería de prompts, Claude Code</span>
+            </div>
+            <span class="cert-date">jun. 2026</span>
+          </div>
+
+          <div class="cert">
+            <div class="cert-info">
+              <h3 class="cert-name">Domina Python: Scikit-learn</h3>
+              <span class="cert-issuer">LinkedIn Learning</span>
+            </div>
+            <span class="cert-date">dic. 2025</span>
+          </div>
+
+          <div class="cert">
+            <div class="cert-info">
+              <h3 class="cert-name">Domina Python: Inteligencia artificial</h3>
+              <span class="cert-issuer">LinkedIn Learning</span>
+            </div>
+            <span class="cert-date">dic. 2025</span>
+          </div>
+
+          <div class="cert">
+            <div class="cert-info">
+              <h3 class="cert-name">Domina Python: NLTK</h3>
+              <span class="cert-issuer">LinkedIn Learning — Procesamiento de lenguaje natural</span>
+            </div>
+            <span class="cert-date">dic. 2025</span>
+          </div>
+
+          <div class="cert">
+            <div class="cert-info">
+              <h3 class="cert-name">Aprende Python, 4: IA y Machine Learning</h3>
+              <span class="cert-issuer">LinkedIn Learning</span>
+            </div>
+            <span class="cert-date">dic. 2025</span>
+          </div>
+
+          <div class="cert">
+            <div class="cert-info">
+              <h3 class="cert-name">Fundamentos de la programación: IA</h3>
+              <span class="cert-issuer">LinkedIn Learning — Desarrollo de software con IA</span>
+            </div>
+            <span class="cert-date">dic. 2025</span>
+          </div>
+
+          <div class="cert">
+            <div class="cert-info">
+              <h3 class="cert-name">Fundamentos de IA: Machine Learning</h3>
+              <span class="cert-issuer">LinkedIn Learning</span>
+            </div>
+            <span class="cert-date">nov. 2025</span>
+          </div>
+
+          <div class="cert">
+            <div class="cert-info">
+              <h3 class="cert-name">Programa de formación de tutores</h3>
+              <span class="cert-issuer">Dirección de Innovación UCSC</span>
+            </div>
+            <span class="cert-date">oct. 2023</span>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== CONTACTO ===================== -->
+    <section id="contacto">
+      <div class="wrap contact-wrap">
+        <div class="contact-label">05 — Contacto</div>
+        <h2 class="contact-h">Hablemos.</h2>
+        <div class="contact-links">
+          <a href="https://www.linkedin.com/in/ppenaj" target="_blank" rel="noopener">LinkedIn ↗ /in/ppenaj</a>
+          <a href="https://github.com/sidios1" target="_blank" rel="noopener">GitHub ↗ /sidios1</a>
+          <a href="https://www.instagram.com/_sidios_/" target="_blank" rel="noopener">Instagram ↗ /_sidios_</a>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="wrap footer-inner">
+        <span>Pablo Peña — Concepción, Chile</span>
+        <span>sidios.cl · © <span id="year"></span></span>
+      </div>
+    </footer>
+
+  </div>
+
+  <script>
+    // ===== El lever: interpola el acento (oklch) entre Sistemas y Personas =====
+    // Constantes de diseño (no UI).
+    var SYSTEMS_HUE = 255;   // polo Sistemas (azul)
+    var PEOPLE_HUE  = 150;   // polo Personas (verde)
+    var LEVER_DEFAULT = 0.5; // reposo → H≈202 (teal)
+
+    var content = document.getElementById('content');
+    var track   = document.getElementById('track');
+    var knob    = document.getElementById('knob');
+    var lblSys  = document.getElementById('lbl-sys');
+    var lblPer  = document.getElementById('lbl-per');
+
+    var t = clamp(LEVER_DEFAULT);
+    var dragging = false;
+
+    function clamp(v) { return Math.max(0, Math.min(1, v)); }
+
+    function accentFor(v) {
+      var h = SYSTEMS_HUE + (PEOPLE_HUE - SYSTEMS_HUE) * v;
+      return 'oklch(0.56 0.11 ' + h.toFixed(1) + ')';
+    }
+
+    function render() {
+      // Acento dinámico heredado por todo el contenido.
+      content.style.setProperty('--accent', accentFor(t));
+      // Filtro de página: escala de grises que se disuelve hacia "Personas".
+      content.style.filter =
+        'grayscale(' + (1 - t).toFixed(3) + ') saturate(' + (0.95 + 0.25 * t).toFixed(3) + ')';
+      knob.style.left = (t * 100).toFixed(2) + '%';
+      lblSys.style.opacity = (0.4 + 0.6 * (1 - t)).toFixed(2);
+      lblPer.style.opacity = (0.4 + 0.6 * t).toFixed(2);
+      track.setAttribute('aria-valuenow', Math.round(t * 100));
+    }
+
+    function fromClientX(x) {
+      var r = track.getBoundingClientRect();
+      if (!r.width) return;
+      t = clamp((x - r.left) / r.width);
+      render();
+    }
+
+    track.addEventListener('pointerdown', function (e) {
+      e.preventDefault();
+      dragging = true;
+      try { track.setPointerCapture(e.pointerId); } catch (_) {}
+      fromClientX(e.clientX);
+    });
+    track.addEventListener('pointermove', function (e) {
+      if (dragging) fromClientX(e.clientX);
+    });
+    track.addEventListener('pointerup', function () { dragging = false; });
+    track.addEventListener('pointercancel', function () { dragging = false; });
+
+    track.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowLeft') t = clamp(t - 0.05);
+      else if (e.key === 'ArrowRight') t = clamp(t + 0.05);
+      else return;
+      e.preventDefault();
+      render();
+    });
+
+    document.getElementById('year').textContent = new Date().getFullYear();
+    render();
+  </script>
+
+</body>
+</html>
