@@ -270,6 +270,40 @@
       letter-spacing: 0.06em; color: #9a9aa3; text-transform: uppercase;
     }
 
+    /* ===================== MÓVIL ===================== */
+    @media (max-width: 720px) {
+      /* Nav: en pantalla angosta la barra de 60px no cabe 5 enlaces.
+         Se deja solo la marca; el sitio es un one-pager con scroll. */
+      nav { padding: 0 20px; }
+      .nav-links { display: none; }
+
+      /* Todas las columnas colapsan a ancho completo sin min-width que
+         desborde la pantalla (causa del scroll horizontal). */
+      .hero-main, .hero-photo, .sec-aside, .sec-body,
+      .about-body, .proj-mid, .cert-info { min-width: 0; flex-basis: 100%; }
+
+      /* Hero */
+      header#top { padding: 104px 20px 64px; gap: 40px; }
+      .hero-name { font-size: clamp(44px, 13vw, 76px); }
+      .hero-photo { max-width: 300px; }
+
+      /* Secciones de dos columnas: apiladas, con la etiqueta arriba
+         (sin sticky, que estorba al apilarse). */
+      .sec-2col { padding: 72px 20px; gap: 28px; }
+      .sec-label { position: static; }
+
+      /* Proyectos / contacto / footer */
+      .proj-wrap { padding: 72px 20px; }
+      .contact-wrap { padding: 96px 20px 72px; }
+      .footer-inner { padding: 24px 20px; }
+    }
+
+    /* Teléfonos muy angostos */
+    @media (max-width: 380px) {
+      .lever { max-width: 100%; }
+      .contact-links { gap: 20px 28px; }
+    }
+
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto; }
       .content, .proj, .lever-knob { transition: none; }
