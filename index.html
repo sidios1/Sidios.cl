@@ -160,7 +160,13 @@
 
     .hero {
       padding: calc(var(--nav-h) + 80px) 0 120px;
-      text-align: center;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 360px;
+      align-items: center;
+      gap: 80px;
     }
 
     .hero-kicker {
@@ -184,19 +190,17 @@
       line-height: 1.14;
       font-weight: 400;
       letter-spacing: 0.007em;
-      margin: 16px auto 0;
-      max-width: 30ch;
+      margin-top: 16px;
+      max-width: 22ch;
     }
 
     .hero-photo {
       display: block;
       width: 100%;
-      max-width: 420px;
       height: auto;
       aspect-ratio: 4 / 5;
       object-fit: cover;
-      object-position: center 25%;
-      margin: 80px auto 0;
+      object-position: center 30%;
       border-radius: 28px;
       background: var(--tile);
     }
@@ -217,7 +221,21 @@
       font-weight: 600;
     }
 
-    .stack { margin-top: 80px; }
+    .stack {
+      display: grid;
+      grid-template-columns: 240px minmax(0, 1fr);
+      gap: 16px 40px;
+      margin-top: 80px;
+      padding-top: 32px;
+      border-top: 1px solid var(--rule);
+    }
+
+    .stack-title {
+      font-size: 21px;
+      line-height: 1.19;
+      font-weight: 600;
+      letter-spacing: 0.011em;
+    }
 
     .subhead {
       font-size: 21px;
@@ -231,12 +249,9 @@
     .stack-list {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      column-gap: 24px;
-    }
-
-    .stack-list li {
-      padding: 12px 0;
-      border-bottom: 1px solid var(--rule);
+      gap: 12px 24px;
+      font-size: 17px;
+      line-height: 1.24;
     }
 
     .bento {
@@ -490,6 +505,7 @@
 
     @media (max-width: 1068px) {
       .hero-name, .contact-title { font-size: 64px; }
+      .hero-grid { grid-template-columns: minmax(0, 1fr) 300px; gap: 48px; }
     }
 
     @media (max-width: 734px) {
@@ -501,10 +517,11 @@
       .hero-kicker { font-size: 17px; line-height: 1.47; }
       .hero-name, .contact-title { font-size: 48px; line-height: 1.08; }
       .hero-tagline { font-size: 21px; line-height: 1.38; }
-      .hero-photo { margin-top: 48px; border-radius: 20px; }
+      .hero-grid { grid-template-columns: minmax(0, 1fr); gap: 40px; }
+      .hero-photo { max-width: 280px; border-radius: 20px; }
       .prose p { font-size: 19px; line-height: 1.42; }
-      .stack { margin-top: 48px; }
-      .stack-list { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 16px; }
+      .stack { grid-template-columns: minmax(0, 1fr); margin-top: 48px; padding-top: 24px; }
+      .stack-list { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 16px; }
       .bento { grid-template-columns: minmax(0, 1fr); gap: 16px; }
       .tile, .tile.feature, .edu { padding: 28px; border-radius: 20px; }
       .tile-title { font-size: 24px; line-height: 1.17; }
@@ -542,10 +559,12 @@
   <main>
 
     <header id="top" class="hero">
-      <div class="container">
-        <p class="hero-kicker">Ingeniería Civil Informática · UCSC · Concepción, Chile</p>
-        <h1 class="hero-name">Pablo Peña</h1>
-        <p class="hero-tagline">Entre construir sistemas y acompañar personas.</p>
+      <div class="container hero-grid">
+        <div>
+          <p class="hero-kicker">Ingeniería Civil Informática · UCSC · Concepción, Chile</p>
+          <h1 class="hero-name">Pablo Peña</h1>
+          <p class="hero-tagline">Entre construir sistemas y acompañar personas.</p>
+        </div>
         <img class="hero-photo" src="assets/pablo.jpg" width="1120" height="1400" alt="Retrato de Pablo Peña">
       </div>
     </header>
@@ -561,7 +580,7 @@
         </div>
 
         <div class="stack">
-          <h3 class="subhead">Stack</h3>
+          <h3 class="stack-title">Stack</h3>
           <ul class="stack-list">
             <li>Python</li>
             <li>Scikit-learn</li>
