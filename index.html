@@ -158,24 +158,32 @@
       margin-bottom: 48px;
     }
 
-    .hero {
-      padding: calc(var(--nav-h) + 80px) 0 120px;
+    .hero-band {
+      padding-top: var(--nav-h);
+      background: linear-gradient(180deg, #c6c5c2 0%, #c3c2bf 100%);
+      overflow: hidden;
     }
 
-    .hero-grid {
+    .hero-photo {
+      display: block;
+      height: 600px;
+      width: auto;
+      max-width: none;
+      aspect-ratio: 1120 / 900;
+      object-fit: cover;
+      object-position: center top;
+      margin: 0 auto;
+      -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 10%, #000 90%, transparent 100%);
+      mask-image: linear-gradient(90deg, transparent 0, #000 10%, #000 90%, transparent 100%);
+    }
+
+    .hero-intro { padding: 56px 0 96px; }
+
+    .hero-intro .container {
       display: grid;
-      grid-template-columns: minmax(0, 1fr) 360px;
-      align-items: center;
-      gap: 80px;
-    }
-
-    .hero-kicker {
-      font-size: 21px;
-      line-height: 1.38;
-      font-weight: 600;
-      letter-spacing: 0.011em;
-      color: var(--text-2);
-      margin-bottom: 8px;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: end;
+      gap: 24px 80px;
     }
 
     .hero-name {
@@ -185,24 +193,22 @@
       letter-spacing: -0.015em;
     }
 
-    .hero-tagline {
-      font-size: 28px;
-      line-height: 1.14;
-      font-weight: 400;
-      letter-spacing: 0.007em;
-      margin-top: 16px;
-      max-width: 22ch;
+    .hero-kicker {
+      font-size: 21px;
+      line-height: 1.29;
+      font-weight: 300;
+      letter-spacing: 0.009em;
+      color: var(--text-2);
+      margin-top: 12px;
     }
 
-    .hero-photo {
-      display: block;
-      width: 100%;
-      height: auto;
-      aspect-ratio: 4 / 5;
-      object-fit: cover;
-      object-position: center 30%;
-      border-radius: 28px;
-      background: var(--tile);
+    .hero-tagline {
+      font-size: 32px;
+      line-height: 1.125;
+      font-weight: 600;
+      letter-spacing: 0.004em;
+      max-width: 18ch;
+      padding-bottom: 8px;
     }
 
     .prose { max-width: 680px; }
@@ -505,7 +511,9 @@
 
     @media (max-width: 1068px) {
       .hero-name, .contact-title { font-size: 64px; }
-      .hero-grid { grid-template-columns: minmax(0, 1fr) 300px; gap: 48px; }
+      .hero-photo { height: 500px; }
+      .hero-intro .container { column-gap: 40px; }
+      .hero-tagline { font-size: 28px; line-height: 1.14; }
     }
 
     @media (max-width: 734px) {
@@ -523,12 +531,12 @@
       }
       .section { padding: 64px 0; }
       .section-title { font-size: 32px; line-height: 1.125; margin-bottom: 28px; }
-      .hero { padding: calc(var(--nav-h) + 40px) 0 56px; text-align: center; }
-      .hero-grid { grid-template-columns: minmax(0, 1fr); gap: 32px; }
-      .hero-kicker { font-size: 15px; line-height: 1.4; margin-bottom: 4px; }
+      .hero-photo { height: 340px; margin-left: 50%; transform: translateX(-50%); }
+      .hero-intro { padding: 32px 0 56px; }
+      .hero-intro .container { grid-template-columns: minmax(0, 1fr); gap: 20px; }
       .hero-name, .contact-title { font-size: 48px; line-height: 1.08; }
-      .hero-tagline { font-size: 21px; line-height: 1.38; margin: 12px auto 0; }
-      .hero-photo { max-width: 300px; margin: 0 auto; border-radius: 22px; }
+      .hero-kicker { font-size: 19px; line-height: 1.32; margin-top: 8px; }
+      .hero-tagline { font-size: 24px; line-height: 1.17; padding-bottom: 0; }
       .prose p { font-size: 17px; line-height: 1.47; }
       .prose p:first-child { font-size: 19px; line-height: 1.42; }
       .prose p + p { margin-top: 16px; }
@@ -579,14 +587,18 @@
 
   <main>
 
-    <header id="top" class="hero">
-      <div class="container hero-grid">
-        <div>
-          <p class="hero-kicker">Ingeniería Civil Informática · UCSC · Concepción, Chile</p>
-          <h1 class="hero-name">Pablo Peña</h1>
+    <header id="top">
+      <div class="hero-band">
+        <img class="hero-photo" src="assets/pablo.jpg" width="1120" height="1400" alt="Retrato de Pablo Peña">
+      </div>
+      <div class="hero-intro">
+        <div class="container">
+          <div>
+            <h1 class="hero-name">Pablo Peña</h1>
+            <p class="hero-kicker">Ingeniería Civil Informática · UCSC · Concepción, Chile</p>
+          </div>
           <p class="hero-tagline">Entre construir sistemas y acompañar personas.</p>
         </div>
-        <img class="hero-photo" src="assets/pablo.jpg" width="1120" height="1400" alt="Retrato de Pablo Peña">
       </div>
     </header>
 
