@@ -158,23 +158,14 @@
       margin-bottom: 48px;
     }
 
-    .hero-band {
-      padding-top: var(--nav-h);
-      background: linear-gradient(180deg, #c6c5c2 0%, #c3c2bf 100%);
-      overflow: hidden;
-    }
+    .hero-band { background: #c4c3c0; }
 
     .hero-photo {
       display: block;
-      height: 600px;
-      width: auto;
-      max-width: none;
-      aspect-ratio: 1120 / 900;
+      width: 100%;
+      height: clamp(420px, 42vw, 680px);
       object-fit: cover;
-      object-position: center top;
-      margin: 0 auto;
-      -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 10%, #000 90%, transparent 100%);
-      mask-image: linear-gradient(90deg, transparent 0, #000 10%, #000 90%, transparent 100%);
+      object-position: 47% 30%;
     }
 
     .hero-intro { padding: 56px 0 96px; }
@@ -511,7 +502,6 @@
 
     @media (max-width: 1068px) {
       .hero-name, .contact-title { font-size: 64px; }
-      .hero-photo { height: 500px; }
       .hero-intro .container { column-gap: 40px; }
       .hero-tagline { font-size: 28px; line-height: 1.14; }
     }
@@ -531,7 +521,7 @@
       }
       .section { padding: 64px 0; }
       .section-title { font-size: 32px; line-height: 1.125; margin-bottom: 28px; }
-      .hero-photo { height: 340px; margin-left: 50%; transform: translateX(-50%); }
+      .hero-photo { height: min(100vw, 460px); }
       .hero-intro { padding: 32px 0 56px; }
       .hero-intro .container { grid-template-columns: minmax(0, 1fr); gap: 20px; }
       .hero-name, .contact-title { font-size: 48px; line-height: 1.08; }
@@ -589,7 +579,7 @@
 
     <header id="top">
       <div class="hero-band">
-        <img class="hero-photo" src="assets/pablo.jpg" width="1120" height="1400" alt="Retrato de Pablo Peña">
+        <img class="hero-photo" src="assets/pablo-wide.jpg" width="2172" height="724" alt="Retrato de Pablo Peña">
       </div>
       <div class="hero-intro">
         <div class="container">
