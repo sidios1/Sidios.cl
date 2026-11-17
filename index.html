@@ -197,46 +197,6 @@
       margin-top: 12px;
     }
 
-    .statement { padding: 120px 0; }
-
-    .statement-pin {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .statement-text {
-      max-width: 14ch;
-      margin: 0 auto;
-      text-align: center;
-      font-size: clamp(44px, 7.5vw, 112px);
-      line-height: 1.05;
-      font-weight: 600;
-      letter-spacing: -0.015em;
-      transform-origin: 50% 50%;
-      will-change: transform, opacity;
-    }
-
-    .motion .statement { padding: 0; }
-    .motion .statement-track { height: 260vh; }
-
-    .motion .statement-pin {
-      position: sticky;
-      top: 0;
-      height: 100vh;
-      padding: 0 var(--gutter);
-    }
-
-    .motion .statement-text,
-    .motion .statement-text .hl {
-      color: var(--text-2);
-      transition: color 0.5s cubic-bezier(0.28, 0.11, 0.32, 1);
-    }
-
-    .motion .statement-text .hl.is-on,
-    .motion .statement-text.is-done,
-    .motion .statement-text.is-done .hl { color: var(--text); }
-
     .prose { max-width: 680px; }
 
     .prose p {
@@ -561,8 +521,7 @@
       .hero-intro { padding: 32px 0 56px; }
       .hero-name, .contact-title { font-size: 48px; line-height: 1.08; }
       .hero-kicker { font-size: 19px; line-height: 1.32; margin-top: 8px; }
-      .statement { padding: 72px 0; }
-      .motion .statement-track { height: 220vh; }
+      .statement { padding: 64px 0; }
       .prose p { font-size: 17px; line-height: 1.47; }
       .prose p + p { margin-top: 16px; }
       .stack { grid-template-columns: minmax(0, 1fr); margin-top: 40px; padding-top: 24px; }
@@ -602,6 +561,39 @@
       opacity: 1;
       transform: none;
     }
+
+    .statement {
+      padding: 96px 0;
+      border-top: 1px solid var(--rule);
+    }
+
+    .statement-text {
+      max-width: 20ch;
+      margin: 0 auto;
+      text-align: center;
+      font-size: clamp(36px, 5vw, 64px);
+      line-height: 1.1;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+    }
+
+    .motion .statement-text.reveal {
+      color: var(--text-2);
+      transition:
+        opacity 0.9s cubic-bezier(0.28, 0.11, 0.32, 1),
+        transform 0.9s cubic-bezier(0.28, 0.11, 0.32, 1),
+        color 0.8s cubic-bezier(0.28, 0.11, 0.32, 1) 1.5s;
+    }
+
+    .motion .statement-text .hl {
+      color: var(--text-2);
+      transition: color 0.8s cubic-bezier(0.28, 0.11, 0.32, 1);
+    }
+
+    .motion .statement-text.in { color: var(--text); }
+    .motion .statement-text.in .hl { color: var(--text); }
+    .motion .statement-text.in .hl:first-child { transition-delay: 0.4s; }
+    .motion .statement-text.in .hl:last-child { transition-delay: 0.95s; }
 
     @keyframes hero-settle {
       from { transform: scale(1.08); }
@@ -655,10 +647,8 @@
     </header>
 
     <section class="statement" aria-label="Lema">
-      <div class="statement-track">
-        <div class="statement-pin">
-          <p class="statement-text">Entre <span class="hl">construir sistemas</span> y <span class="hl">acompañar personas</span>.</p>
-        </div>
+      <div class="container">
+        <p class="statement-text">Entre <span class="hl">construir sistemas</span> y <span class="hl">acompañar personas</span>.</p>
       </div>
     </section>
 
@@ -987,7 +977,7 @@
       var root = document.documentElement;
 
       if (root.classList.contains('motion')) {
-        var targets = document.querySelectorAll('.section-title, .stack, .tile, .row, .edu, .subhead, .cert, .contact-actions, .exp-head .segmented');
+        var targets = document.querySelectorAll('.statement-text, .section-title, .stack, .tile, .row, .edu, .subhead, .cert, .contact-actions, .exp-head .segmented');
         Array.prototype.forEach.call(targets, function (el) { el.classList.add('reveal'); });
 
         var io = new IntersectionObserver(function (entries) {
@@ -1012,27 +1002,9 @@
           });
         }
 
-        var track = document.querySelector('.statement-track');
-        var statement = document.querySelector('.statement-text');
-        var marks = statement.querySelectorAll('.hl');
-
-        function stage() {
-          var rect = track.getBoundingClientRect();
-          var span = rect.height - window.innerHeight;
-          var p = span > 0 ? Math.min(1, Math.max(0, -rect.top / span)) : 0;
-          marks[0].classList.toggle('is-on', p >= 0.18);
-          marks[1].classList.toggle('is-on', p >= 0.45);
-          statement.classList.toggle('is-done', p >= 0.7);
-          var t = Math.min(1, Math.max(0, (p - 0.78) / 0.22));
-          var ease = t * t * (3 - 2 * t);
-          statement.style.transform = 'scale(' + (1 - 0.2 * ease).toFixed(4) + ')';
-          statement.style.opacity = (1 - ease).toFixed(4);
-        }
-
         function frame() {
           ticking = false;
           light();
-          stage();
         }
 
         window.addEventListener('scroll', function () {
