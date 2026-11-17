@@ -9,6 +9,12 @@
   <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
 
+  <script>
+    if ('IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      document.documentElement.classList.add('motion');
+    }
+  </script>
+
   <style>
     :root {
       --bg: #ffffff;
@@ -142,10 +148,15 @@
       opacity: 0.8;
       white-space: nowrap;
       line-height: var(--nav-h);
-      transition: opacity 0.15s ease;
+      transition: opacity 0.2s ease, box-shadow 0.2s ease;
     }
 
     .nav-links a:hover { opacity: 1; text-decoration: none; }
+
+    .nav-links a.is-active {
+      opacity: 1;
+      box-shadow: inset 0 -1px 0 currentColor;
+    }
 
     .section { padding: 120px 0; }
     .section.alt { background: var(--bg-alt); }
@@ -158,7 +169,7 @@
       margin-bottom: 48px;
     }
 
-    .hero-band { background: #c4c3c0; }
+    .hero-band { background: #c4c3c0; overflow: hidden; }
 
     .hero-photo {
       display: block;
@@ -170,13 +181,6 @@
 
     .hero-intro { padding: 56px 0 96px; }
 
-    .hero-intro .container {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) auto;
-      align-items: end;
-      gap: 24px 80px;
-    }
-
     .hero-name {
       font-size: 80px;
       line-height: 1.05;
@@ -185,22 +189,53 @@
     }
 
     .hero-kicker {
-      font-size: 21px;
-      line-height: 1.29;
+      font-size: 24px;
+      line-height: 1.25;
       font-weight: 300;
       letter-spacing: 0.009em;
       color: var(--text-2);
       margin-top: 12px;
     }
 
-    .hero-tagline {
-      font-size: 32px;
-      line-height: 1.125;
-      font-weight: 600;
-      letter-spacing: 0.004em;
-      max-width: 18ch;
-      padding-bottom: 8px;
+    .statement { padding: 120px 0; }
+
+    .statement-pin {
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
+
+    .statement-text {
+      max-width: 14ch;
+      margin: 0 auto;
+      text-align: center;
+      font-size: clamp(44px, 7.5vw, 112px);
+      line-height: 1.05;
+      font-weight: 600;
+      letter-spacing: -0.015em;
+      transform-origin: 50% 50%;
+      will-change: transform, opacity;
+    }
+
+    .motion .statement { padding: 0; }
+    .motion .statement-track { height: 260vh; }
+
+    .motion .statement-pin {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      padding: 0 var(--gutter);
+    }
+
+    .motion .statement-text,
+    .motion .statement-text .hl {
+      color: var(--text-2);
+      transition: color 0.5s cubic-bezier(0.28, 0.11, 0.32, 1);
+    }
+
+    .motion .statement-text .hl.is-on,
+    .motion .statement-text.is-done,
+    .motion .statement-text.is-done .hl { color: var(--text); }
 
     .prose { max-width: 680px; }
 
@@ -208,15 +243,17 @@
       font-size: 21px;
       line-height: 1.38;
       letter-spacing: 0.011em;
-      color: var(--text-2);
+      color: var(--text);
     }
 
     .prose p + p { margin-top: 24px; }
 
-    .prose p:first-child {
-      color: var(--text);
-      font-weight: 600;
+    .motion .prose p {
+      color: var(--text-2);
+      transition: color 0.7s cubic-bezier(0.28, 0.11, 0.32, 1);
     }
+
+    .motion .prose p.is-lit { color: var(--text); }
 
     .stack {
       display: grid;
@@ -502,8 +539,6 @@
 
     @media (max-width: 1068px) {
       .hero-name, .contact-title { font-size: 64px; }
-      .hero-intro .container { column-gap: 40px; }
-      .hero-tagline { font-size: 28px; line-height: 1.14; }
     }
 
     @media (max-width: 734px) {
@@ -519,16 +554,16 @@
         opacity: 1;
         line-height: 1.33;
       }
+      .nav-links a.is-active { box-shadow: none; }
       .section { padding: 64px 0; }
       .section-title { font-size: 32px; line-height: 1.125; margin-bottom: 28px; }
       .hero-photo { height: min(100vw, 460px); }
       .hero-intro { padding: 32px 0 56px; }
-      .hero-intro .container { grid-template-columns: minmax(0, 1fr); gap: 20px; }
       .hero-name, .contact-title { font-size: 48px; line-height: 1.08; }
       .hero-kicker { font-size: 19px; line-height: 1.32; margin-top: 8px; }
-      .hero-tagline { font-size: 24px; line-height: 1.17; padding-bottom: 0; }
+      .statement { padding: 72px 0; }
+      .motion .statement-track { height: 220vh; }
       .prose p { font-size: 17px; line-height: 1.47; }
-      .prose p:first-child { font-size: 19px; line-height: 1.42; }
       .prose p + p { margin-top: 16px; }
       .stack { grid-template-columns: minmax(0, 1fr); margin-top: 40px; padding-top: 24px; }
       .stack-list { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 16px; }
@@ -552,6 +587,36 @@
       .contact-title { margin-bottom: 28px; }
       .contact-actions { flex-direction: column; gap: 16px; }
       .footer .container { flex-direction: column; align-items: center; text-align: center; gap: 4px; }
+    }
+
+    .motion .reveal {
+      opacity: 0;
+      transform: translateY(32px);
+      transition:
+        opacity 0.9s cubic-bezier(0.28, 0.11, 0.32, 1),
+        transform 0.9s cubic-bezier(0.28, 0.11, 0.32, 1);
+      transition-delay: var(--delay, 0ms);
+    }
+
+    .motion .reveal.in {
+      opacity: 1;
+      transform: none;
+    }
+
+    @keyframes hero-settle {
+      from { transform: scale(1.08); }
+      to { transform: scale(1); }
+    }
+
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: none; }
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .hero-photo { animation: hero-settle 1.8s cubic-bezier(0.28, 0.11, 0.32, 1) both; }
+      .hero-name { animation: rise 1s cubic-bezier(0.28, 0.11, 0.32, 1) 0.25s both; }
+      .hero-kicker { animation: rise 1s cubic-bezier(0.28, 0.11, 0.32, 1) 0.4s both; }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -583,14 +648,19 @@
       </div>
       <div class="hero-intro">
         <div class="container">
-          <div>
-            <h1 class="hero-name">Pablo Peña</h1>
-            <p class="hero-kicker">Ingeniería Civil Informática · UCSC · Concepción, Chile</p>
-          </div>
-          <p class="hero-tagline">Entre construir sistemas y acompañar personas.</p>
+          <h1 class="hero-name">Pablo Peña</h1>
+          <p class="hero-kicker">Ingeniería Civil Informática · UCSC · Concepción, Chile</p>
         </div>
       </div>
     </header>
+
+    <section class="statement" aria-label="Lema">
+      <div class="statement-track">
+        <div class="statement-pin">
+          <p class="statement-text">Entre <span class="hl">construir sistemas</span> y <span class="hl">acompañar personas</span>.</p>
+        </div>
+      </div>
+    </section>
 
     <section id="sobre" class="section alt" aria-labelledby="sobre-title">
       <div class="container">
@@ -913,6 +983,84 @@
           select(next, true);
         });
       });
+
+      var root = document.documentElement;
+
+      if (root.classList.contains('motion')) {
+        var targets = document.querySelectorAll('.section-title, .stack, .tile, .row, .edu, .subhead, .cert, .contact-actions, .exp-head .segmented');
+        Array.prototype.forEach.call(targets, function (el) { el.classList.add('reveal'); });
+
+        var io = new IntersectionObserver(function (entries) {
+          var shown = entries.filter(function (e) { return e.isIntersecting; });
+          shown.forEach(function (entry, i) {
+            entry.target.style.setProperty('--delay', Math.min(i, 4) * 80 + 'ms');
+            entry.target.classList.add('in');
+            io.unobserve(entry.target);
+          });
+        }, { rootMargin: '0px 0px -8% 0px', threshold: 0.12 });
+
+        Array.prototype.forEach.call(targets, function (el) { io.observe(el); });
+
+        var paragraphs = Array.prototype.slice.call(document.querySelectorAll('.prose p'));
+        var ticking = false;
+
+        function light() {
+          ticking = false;
+          var line = window.innerHeight * 0.72;
+          paragraphs.forEach(function (p) {
+            p.classList.toggle('is-lit', p.getBoundingClientRect().top < line);
+          });
+        }
+
+        var track = document.querySelector('.statement-track');
+        var statement = document.querySelector('.statement-text');
+        var marks = statement.querySelectorAll('.hl');
+
+        function stage() {
+          var rect = track.getBoundingClientRect();
+          var span = rect.height - window.innerHeight;
+          var p = span > 0 ? Math.min(1, Math.max(0, -rect.top / span)) : 0;
+          marks[0].classList.toggle('is-on', p >= 0.18);
+          marks[1].classList.toggle('is-on', p >= 0.45);
+          statement.classList.toggle('is-done', p >= 0.7);
+          var t = Math.min(1, Math.max(0, (p - 0.78) / 0.22));
+          var ease = t * t * (3 - 2 * t);
+          statement.style.transform = 'scale(' + (1 - 0.2 * ease).toFixed(4) + ')';
+          statement.style.opacity = (1 - ease).toFixed(4);
+        }
+
+        function frame() {
+          ticking = false;
+          light();
+          stage();
+        }
+
+        window.addEventListener('scroll', function () {
+          if (!ticking) { ticking = true; window.requestAnimationFrame(frame); }
+        }, { passive: true });
+        window.addEventListener('resize', frame);
+        frame();
+      }
+
+      var navLinks = Array.prototype.slice.call(document.querySelectorAll('.nav-links a'));
+      if ('IntersectionObserver' in window) {
+        var spy = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (!entry.isIntersecting) return;
+            var id = '#' + entry.target.id;
+            navLinks.forEach(function (a) {
+              var on = a.getAttribute('href') === id;
+              a.classList.toggle('is-active', on);
+              if (on) a.setAttribute('aria-current', 'true');
+              else a.removeAttribute('aria-current');
+            });
+          });
+        }, { rootMargin: '-45% 0px -50% 0px' });
+        ['top', 'sobre', 'proyectos', 'experiencia', 'certificaciones', 'contacto'].forEach(function (id) {
+          var el = document.getElementById(id);
+          if (el) spy.observe(el);
+        });
+      }
 
       document.getElementById('year').textContent = new Date().getFullYear();
     })();
