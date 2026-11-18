@@ -265,6 +265,14 @@
 
     .tile.wide { grid-column: 1 / -1; }
 
+    .section.alt .tile,
+    .section.alt .edu { background: var(--bg); }
+
+    @media (prefers-color-scheme: dark) {
+      .section.alt .tile,
+      .section.alt .edu { background: var(--tile); }
+    }
+
     .tile-role {
       font-size: 14px;
       line-height: 1.43;
@@ -493,6 +501,228 @@
       border-top: 1px solid var(--rule);
     }
 
+    .app-tile {
+      position: relative;
+      padding: 32px 32px 36px;
+      gap: 0;
+    }
+
+    .mac-window {
+      position: relative;
+      border-radius: 12px;
+      background: var(--bg);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.10), 0 0 0 0.5px var(--nav-rule);
+      overflow: hidden;
+      margin-bottom: 32px;
+      transition:
+        transform 0.5s cubic-bezier(0.28, 0.11, 0.32, 1),
+        box-shadow 0.5s cubic-bezier(0.28, 0.11, 0.32, 1);
+    }
+
+    .app-tile:hover .mac-window,
+    .app-tile:focus-within .mac-window {
+      transform: translateY(-4px);
+      box-shadow: 0 24px 48px rgba(0, 0, 0, 0.16), 0 0 0 0.5px var(--nav-rule);
+    }
+
+    .mac-bar {
+      position: relative;
+      display: flex;
+      align-items: center;
+      height: 36px;
+      padding: 0 14px;
+      background: var(--bg-alt);
+      border-bottom: 0.5px solid var(--nav-rule);
+    }
+
+    .mac-lights { display: flex; gap: 8px; position: relative; z-index: 1; }
+
+    .mac-lights span {
+      display: grid;
+      place-items: center;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      font-size: 9px;
+      line-height: 1;
+      font-weight: 700;
+      color: transparent;
+      box-shadow: inset 0 0 0 0.5px rgba(0, 0, 0, 0.12);
+    }
+
+    .mac-lights span:nth-child(1) { background: #ff5f57; }
+    .mac-lights span:nth-child(2) { background: #febc2e; }
+    .mac-lights span:nth-child(3) { background: #28c840; }
+    .app-tile:hover .mac-lights span { color: rgba(0, 0, 0, 0.55); }
+
+    .mac-title {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: -0.008em;
+      color: var(--text-2);
+    }
+
+    .mac-body { height: 244px; }
+
+    .mock-prompt {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      padding: 16px 18px;
+      font-size: 13px;
+      line-height: 1.3;
+    }
+
+    .mock-row {
+      display: grid;
+      grid-template-columns: 92px minmax(0, 1fr);
+      align-items: center;
+      gap: 12px;
+      padding: 6px 12px;
+      border-radius: 8px;
+      background: var(--bg-alt);
+    }
+
+    .mock-row b { font-weight: 600; }
+    .mock-row span { color: var(--text-2); opacity: 0.7; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .mock-row span i { font-style: normal; color: var(--text); opacity: 1; }
+
+    .mock-seg {
+      display: inline-flex;
+      align-self: flex-end;
+      padding: 2px;
+      margin-top: 2px;
+      border-radius: 7px;
+      background: var(--seg-track);
+      font-size: 11px;
+    }
+
+    .mock-seg span { padding: 3px 10px; border-radius: 5px; }
+    .mock-seg span:first-child { background: var(--seg-on); font-weight: 600; box-shadow: 0 0 0 0.5px var(--seg-on-ring); }
+
+    .mock-cam {
+      position: relative;
+      background:
+        radial-gradient(ellipse 40% 50% at 50% 46%, rgba(255, 214, 170, 0.55), transparent 70%),
+        linear-gradient(160deg, #2b3a4a 0%, #1a1f27 55%, #0d0f12 100%);
+    }
+
+    .mock-cam::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(to right, transparent calc(33.33% - 0.5px), rgba(255, 255, 255, 0.22) 33.33%, transparent calc(33.33% + 0.5px), transparent calc(66.66% - 0.5px), rgba(255, 255, 255, 0.22) 66.66%, transparent calc(66.66% + 0.5px)),
+        linear-gradient(to bottom, transparent calc(33.33% - 0.5px), rgba(255, 255, 255, 0.22) 33.33%, transparent calc(33.33% + 0.5px), transparent calc(66.66% - 0.5px), rgba(255, 255, 255, 0.22) 66.66%, transparent calc(66.66% + 0.5px));
+    }
+
+    .mock-face {
+      position: absolute;
+      left: 50%;
+      top: 44%;
+      width: 64px;
+      height: 76px;
+      transform: translate(-50%, -50%);
+      border: 1.5px solid #febc2e;
+      border-radius: 6px;
+    }
+
+    .mock-zoom {
+      position: absolute;
+      left: 50%;
+      bottom: 64px;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 6px;
+      padding: 3px;
+      border-radius: 980px;
+      background: rgba(0, 0, 0, 0.4);
+      font-size: 11px;
+      color: #f5f5f7;
+    }
+
+    .mock-zoom span { display: grid; place-items: center; width: 26px; height: 22px; border-radius: 980px; }
+    .mock-zoom span:first-child { background: rgba(255, 255, 255, 0.22); color: #febc2e; font-weight: 600; }
+
+    .mock-shutter {
+      position: absolute;
+      left: 50%;
+      bottom: 14px;
+      width: 40px;
+      height: 40px;
+      transform: translateX(-50%);
+      border-radius: 50%;
+      background: #ffffff;
+      box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.5), 0 0 0 5px #ffffff;
+    }
+
+    .app-head {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .app-icon {
+      flex: 0 0 auto;
+      width: 56px;
+      height: 56px;
+      border-radius: 13px;
+    }
+
+    .app-icon .ic-bg { fill: var(--text); }
+
+    .app-icon .ic-glyph {
+      fill: none;
+      stroke: var(--bg);
+      stroke-width: 3.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .app-head .tile-title { margin-bottom: 0; }
+    .app-head .tile-role { margin-bottom: 2px; }
+
+    .app-foot {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px 24px;
+      margin-top: auto;
+      padding-top: 24px;
+    }
+
+    .app-foot .tile-tags { margin-top: 0; padding-top: 0; }
+
+    .button.small {
+      padding: 6px 16px;
+      font-size: 14px;
+      line-height: 1.43;
+      font-weight: 600;
+      letter-spacing: -0.016em;
+    }
+
+    .app-open::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+    }
+
+    @supports selector(:has(a)) {
+      .app-tile:has(.app-open:focus-visible) {
+        outline: 4px solid var(--focus);
+        outline-offset: 2px;
+      }
+
+      .app-open:focus-visible { outline: none; }
+    }
+
     @media (min-width: 1441px) {
       :root { --max: 1068px; }
     }
@@ -532,6 +762,15 @@
       .tile.feature .tile-title { font-size: 32px; line-height: 1.125; margin-bottom: 12px; }
       .tile.feature .tile-desc { font-size: 17px; line-height: 1.47; }
       .tile-tags { padding-top: 16px; }
+      .app-tile { padding: 20px 20px 24px; }
+      .mac-window { margin-bottom: 24px; }
+      .mac-body { height: 200px; }
+      .mock-prompt { gap: 6px; padding: 14px; font-size: 12px; }
+      .mock-row { grid-template-columns: 80px minmax(0, 1fr); gap: 8px; padding: 5px 10px; }
+      .mock-row:nth-child(5) { display: none; }
+      .app-icon { width: 48px; height: 48px; border-radius: 11px; }
+      .app-foot { flex-direction: column; align-items: stretch; padding-top: 20px; }
+      .app-foot .button.small { text-align: center; padding: 10px 16px; }
       .exp-head { margin-bottom: 24px; gap: 20px; }
       .exp-head .segmented { width: 100%; }
       .segmented button { flex: 1 1 0; min-width: 0; padding: 0 8px; }
@@ -608,9 +847,18 @@
       .hero-kicker { animation: rise 1s cubic-bezier(0.28, 0.11, 0.32, 1) 0.4s both; }
     }
 
+    /* Transición entre páginas de sidios.cl (fundido de entrada y salida) */
+    @keyframes page-in { from { opacity: 0; } }
+
+    @media (prefers-reduced-motion: no-preference) {
+      body { animation: page-in 0.45s cubic-bezier(0.28, 0.11, 0.32, 1) backwards; }
+      html.is-leaving body { opacity: 0; transition: opacity 0.22s ease; }
+    }
+
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto; }
-      .exp-list, .nav-links a, .segmented button, .button { transition: none; }
+      .exp-list, .nav-links a, .segmented button, .button, .mac-window { transition: none; }
+      .app-tile:hover .mac-window, .app-tile:focus-within .mac-window { transform: none; }
     }
   </style>
 </head>
@@ -621,6 +869,7 @@
       <a href="#top" class="nav-brand">sidios</a>
       <div class="nav-links">
         <a href="#sobre">Sobre mí</a>
+        <a href="#web">Web</a>
         <a href="#proyectos">Proyectos</a>
         <a href="#experiencia">Experiencia</a>
         <a href="#certificaciones">Formación</a>
@@ -678,7 +927,71 @@
       </div>
     </section>
 
-    <section id="proyectos" class="section" aria-labelledby="proyectos-title">
+    <section id="web" class="section" aria-labelledby="web-title">
+      <div class="container">
+        <h2 id="web-title" class="section-title">Proyectos web</h2>
+        <div class="bento">
+
+          <article class="tile app-tile">
+            <div class="mac-window" aria-hidden="true">
+              <div class="mac-bar">
+                <div class="mac-lights"><span>×</span><span>−</span><span>+</span></div>
+                <div class="mac-title">prompt.sidios.cl</div>
+              </div>
+              <div class="mac-body mock-prompt">
+                <div class="mock-row"><b>Rol</b><span><i>Eres un arquitecto</i> de software senior…</span></div>
+                <div class="mock-row"><b>Contexto</b><span>Trabajas en un sitio estático…</span></div>
+                <div class="mock-row"><b>Objetivo</b><span>Implementa una sección…</span></div>
+                <div class="mock-row"><b>Salida</b><span>Código completo y comentado…</span></div>
+                <div class="mock-row"><b>Restricciones</b><span>Usa la misma estética…</span></div>
+                <div class="mock-seg"><span>Claude</span><span>Gemini</span><span>ChatGPT</span></div>
+              </div>
+            </div>
+            <div class="app-head">
+              <svg class="app-icon" viewBox="0 0 64 64" aria-hidden="true"><rect class="ic-bg" width="64" height="64" rx="14"/><path class="ic-glyph" d="M20 24l9 8-9 8M33 41h11"/></svg>
+              <div>
+                <p class="tile-role">Productividad · IA</p>
+                <h3 class="tile-title">PromptForge</h3>
+              </div>
+            </div>
+            <p class="tile-desc">Arma prompts claros con la estructura Rol · Contexto · Objetivo · Salida · Restricciones. Predicción en línea según el ámbito, historial local y salida adaptada a Claude, Gemini y ChatGPT.</p>
+            <div class="app-foot">
+              <p class="tile-tags">HTML, CSS, JS · n-gramas · localStorage</p>
+              <a class="button small app-open" href="https://prompt.sidios.cl" aria-label="Abrir PromptForge">Abrir</a>
+            </div>
+          </article>
+
+          <article class="tile app-tile">
+            <div class="mac-window" aria-hidden="true">
+              <div class="mac-bar">
+                <div class="mac-lights"><span>×</span><span>−</span><span>+</span></div>
+                <div class="mac-title">camara.sidios.cl</div>
+              </div>
+              <div class="mac-body mock-cam">
+                <span class="mock-face"></span>
+                <div class="mock-zoom"><span>1×</span><span>2×</span><span>3×</span><span>5×</span></div>
+                <span class="mock-shutter"></span>
+              </div>
+            </div>
+            <div class="app-head">
+              <svg class="app-icon" viewBox="0 0 64 64" aria-hidden="true"><rect class="ic-bg" width="64" height="64" rx="14"/><path class="ic-glyph" d="M16 26a3 3 0 0 1 3-3h5l3-4h10l3 4h5a3 3 0 0 1 3 3v16a3 3 0 0 1-3 3H19a3 3 0 0 1-3-3z"/><circle class="ic-glyph" cx="32" cy="34" r="6.5"/></svg>
+              <div>
+                <p class="tile-role">Foto y vídeo</p>
+                <h3 class="tile-title">Cámara</h3>
+              </div>
+            </div>
+            <p class="tile-desc">La app de cámara de macOS, en el navegador: estilos fotográficos y ajustes en tiempo real con WebGL 2, compensación de contraluz con detección de cara, fusión de fotogramas, temporizador e histograma.</p>
+            <div class="app-foot">
+              <p class="tile-tags">WebGL 2 · MediaPipe · IndexedDB</p>
+              <a class="button small app-open" href="https://camara.sidios.cl" aria-label="Abrir Cámara">Abrir</a>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <section id="proyectos" class="section alt" aria-labelledby="proyectos-title">
       <div class="container">
         <h2 id="proyectos-title" class="section-title">Proyectos</h2>
         <div class="bento">
@@ -729,7 +1042,7 @@
       </div>
     </section>
 
-    <section id="experiencia" class="section alt" aria-labelledby="experiencia-title">
+    <section id="experiencia" class="section" aria-labelledby="experiencia-title">
       <div class="container">
         <div class="exp-head">
           <h2 id="experiencia-title" class="section-title">Experiencia</h2>
@@ -823,7 +1136,7 @@
       </div>
     </section>
 
-    <section id="certificaciones" class="section" aria-labelledby="certificaciones-title">
+    <section id="certificaciones" class="section alt" aria-labelledby="certificaciones-title">
       <div class="container">
         <h2 id="certificaciones-title" class="section-title">Educación y certificaciones</h2>
 
@@ -904,7 +1217,7 @@
       </div>
     </section>
 
-    <section id="contacto" class="section alt contact" aria-labelledby="contacto-title">
+    <section id="contacto" class="section contact" aria-labelledby="contacto-title">
       <div class="container">
         <h2 id="contacto-title" class="contact-title">Hablemos.</h2>
         <div class="contact-actions">
@@ -1025,7 +1338,7 @@
             });
           });
         }, { rootMargin: '-45% 0px -50% 0px' });
-        ['top', 'sobre', 'proyectos', 'experiencia', 'certificaciones', 'contacto'].forEach(function (id) {
+        ['top', 'sobre', 'web', 'proyectos', 'experiencia', 'certificaciones', 'contacto'].forEach(function (id) {
           var el = document.getElementById(id);
           if (el) spy.observe(el);
         });
@@ -1035,5 +1348,27 @@
     })();
   </script>
 
+  <script>
+    // Transición entre páginas de sidios.cl: fundido antes de navegar a otra página del sitio
+    (function () {
+      var root = document.documentElement;
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      document.addEventListener('click', function (e) {
+        if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+        var a = e.target.closest && e.target.closest('a[href]');
+        if (!a || (a.target && a.target !== '_self') || a.hasAttribute('download')) return;
+        var url = new URL(a.href, location.href);
+        var ours = url.hostname === location.hostname || /(^|\.)sidios\.cl$/.test(url.hostname);
+        if (!ours || !/^https?:$/.test(url.protocol)) return;
+        if (url.origin === location.origin && url.pathname === location.pathname && url.search === location.search) return;
+        e.preventDefault();
+        root.classList.add('is-leaving');
+        window.setTimeout(function () { location.href = url.href; }, 220);
+      });
+      window.addEventListener('pageshow', function (e) {
+        if (e.persisted) root.classList.remove('is-leaving');
+      });
+    })();
+  </script>
 </body>
 </html>
