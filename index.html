@@ -158,6 +158,8 @@
       box-shadow: inset 0 -1px 0 currentColor;
     }
 
+    .nav-toggle { display: none; }
+
     .section { padding: 120px 0; }
     .section.alt { background: var(--bg-alt); }
 
@@ -265,14 +267,6 @@
 
     .tile.wide { grid-column: 1 / -1; }
 
-    .section.alt .tile,
-    .section.alt .edu { background: var(--bg); }
-
-    @media (prefers-color-scheme: dark) {
-      .section.alt .tile,
-      .section.alt .edu { background: var(--tile); }
-    }
-
     .tile-role {
       font-size: 14px;
       line-height: 1.43;
@@ -364,6 +358,11 @@
     }
 
     .exp-list.is-switching { opacity: 0; }
+
+    .panels { transition: opacity 0.18s ease; }
+    .panels.is-switching { opacity: 0; }
+    .panels > .bento + .bento { margin-top: 20px; }
+    .panels > .bento[hidden] { display: none; }
 
     .row {
       display: grid;
@@ -733,18 +732,73 @@
 
     @media (max-width: 734px) {
       :root { --gutter: 20px; }
-      .nav-links { align-items: center; overflow: visible; }
-      .nav-links a:not(:last-child) { display: none; }
-      .nav-links a:last-child {
-        margin-left: auto;
-        padding: 4px 12px;
-        border-radius: 980px;
-        background: var(--button);
-        color: #ffffff;
-        opacity: 1;
-        line-height: 1.33;
+      .nav-toggle {
+        display: block;
+        position: relative;
+        width: 44px;
+        height: var(--nav-h);
+        margin: 0 -13px 0 auto;
+        padding: 0;
+        border: 0;
+        background: transparent;
+        color: var(--text);
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent;
       }
+      .nav-toggle span {
+        position: absolute;
+        left: 13px;
+        top: 50%;
+        width: 18px;
+        height: 1.5px;
+        margin-top: -0.75px;
+        border-radius: 1px;
+        background: currentColor;
+        transition: transform 0.32s cubic-bezier(0.28, 0.11, 0.32, 1);
+      }
+      .nav-toggle span:first-child { transform: translateY(-3.5px); }
+      .nav-toggle span:last-child { transform: translateY(3.5px); }
+      .nav.is-open .nav-toggle span:first-child { transform: rotate(45deg); }
+      .nav.is-open .nav-toggle span:last-child { transform: rotate(-45deg); }
+      .nav.is-open { background: var(--bg); border-bottom-color: transparent; }
+      .nav-links {
+        position: absolute;
+        top: var(--nav-h);
+        left: 0;
+        right: 0;
+        height: calc(100vh - var(--nav-h));
+        height: calc(100dvh - var(--nav-h));
+        flex-direction: column;
+        gap: 0;
+        padding: 12px var(--gutter) 40px;
+        overflow-x: hidden;
+        overflow-y: auto;
+        background: var(--bg);
+        font-size: 28px;
+        font-weight: 600;
+        letter-spacing: 0.007em;
+        visibility: hidden;
+        opacity: 0;
+        transition: opacity 0.3s ease, visibility 0s linear 0.3s;
+      }
+      .nav-links a,
+      .nav-links a:first-child {
+        margin-left: 0;
+        padding: 8px 0;
+        line-height: 1.14;
+        opacity: 1;
+        transform: translateY(-8px);
+        transition: transform 0.45s cubic-bezier(0.28, 0.11, 0.32, 1);
+      }
+      .nav-links a:hover { opacity: 0.8; }
       .nav-links a.is-active { box-shadow: none; }
+      .nav.is-open .nav-links { visibility: visible; opacity: 1; transition: opacity 0.3s ease; }
+      .nav.is-open .nav-links a { transform: none; }
+      .nav.is-open .nav-links a:nth-child(2) { transition-delay: 30ms; }
+      .nav.is-open .nav-links a:nth-child(3) { transition-delay: 60ms; }
+      .nav.is-open .nav-links a:nth-child(4) { transition-delay: 90ms; }
+      .nav.is-open .nav-links a:nth-child(5) { transition-delay: 120ms; }
+      html.menu-open { overflow: hidden; }
       .section { padding: 64px 0; }
       .section-title { font-size: 32px; line-height: 1.125; margin-bottom: 28px; }
       .hero-photo { height: min(100vw, 460px); }
@@ -857,7 +911,7 @@
 
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto; }
-      .exp-list, .nav-links a, .segmented button, .button, .mac-window { transition: none; }
+      .exp-list, .panels, .nav-links, .nav-links a, .nav-toggle span, .segmented button, .button, .mac-window { transition: none; }
       .app-tile:hover .mac-window, .app-tile:focus-within .mac-window { transform: none; }
     }
   </style>
@@ -867,9 +921,9 @@
   <nav class="nav" aria-label="Principal">
     <div class="container">
       <a href="#top" class="nav-brand">sidios</a>
-      <div class="nav-links">
+      <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú"><span></span><span></span></button>
+      <div class="nav-links" id="nav-links">
         <a href="#sobre">Sobre mí</a>
-        <a href="#web">Web</a>
         <a href="#proyectos">Proyectos</a>
         <a href="#experiencia">Experiencia</a>
         <a href="#certificaciones">Formación</a>
@@ -927,10 +981,18 @@
       </div>
     </section>
 
-    <section id="web" class="section" aria-labelledby="web-title">
+    <section id="proyectos" class="section" aria-labelledby="proyectos-title">
       <div class="container">
-        <h2 id="web-title" class="section-title">Proyectos web</h2>
-        <div class="bento">
+        <div class="exp-head">
+          <h2 id="proyectos-title" class="section-title">Proyectos</h2>
+          <div class="segmented" role="radiogroup" aria-label="Tipo de proyecto" hidden>
+            <button type="button" role="radio" aria-checked="true" aria-controls="panel-apps" data-panel="apps">Apps</button>
+            <button type="button" role="radio" aria-checked="false" aria-controls="panel-trabajos" tabindex="-1" data-panel="trabajos">Trabajos</button>
+          </div>
+        </div>
+
+        <div class="panels" aria-live="polite">
+        <div id="panel-apps" class="bento" data-panel="apps" role="group" aria-label="Apps">
 
           <article class="tile app-tile">
             <div class="mac-window" aria-hidden="true">
@@ -988,13 +1050,8 @@
           </article>
 
         </div>
-      </div>
-    </section>
 
-    <section id="proyectos" class="section alt" aria-labelledby="proyectos-title">
-      <div class="container">
-        <h2 id="proyectos-title" class="section-title">Proyectos</h2>
-        <div class="bento">
+        <div id="panel-trabajos" class="bento" data-panel="trabajos" role="group" aria-label="Trabajos">
 
           <article class="tile wide feature">
             <p class="tile-role">Líder de equipo</p>
@@ -1039,10 +1096,11 @@
           </article>
 
         </div>
+        </div>
       </div>
     </section>
 
-    <section id="experiencia" class="section" aria-labelledby="experiencia-title">
+    <section id="experiencia" class="section alt" aria-labelledby="experiencia-title">
       <div class="container">
         <div class="exp-head">
           <h2 id="experiencia-title" class="section-title">Experiencia</h2>
@@ -1136,7 +1194,7 @@
       </div>
     </section>
 
-    <section id="certificaciones" class="section alt" aria-labelledby="certificaciones-title">
+    <section id="certificaciones" class="section" aria-labelledby="certificaciones-title">
       <div class="container">
         <h2 id="certificaciones-title" class="section-title">Educación y certificaciones</h2>
 
@@ -1217,7 +1275,7 @@
       </div>
     </section>
 
-    <section id="contacto" class="section contact" aria-labelledby="contacto-title">
+    <section id="contacto" class="section alt contact" aria-labelledby="contacto-title">
       <div class="container">
         <h2 id="contacto-title" class="contact-title">Hablemos.</h2>
         <div class="contact-actions">
@@ -1239,52 +1297,98 @@
 
   <script>
     (function () {
-      var group = document.querySelector('.segmented');
-      var list = document.querySelector('.exp-list');
-      var rows = Array.prototype.slice.call(list.querySelectorAll('.row'));
-      var buttons = Array.prototype.slice.call(group.querySelectorAll('button'));
+      var root = document.documentElement;
       var still = window.matchMedia('(prefers-reduced-motion: reduce)');
 
-      group.hidden = false;
+      // Control segmentado accesible (radiogroup con flechas, Inicio y Fin)
+      function segmented(group, onSelect) {
+        var buttons = Array.prototype.slice.call(group.querySelectorAll('button'));
+        group.hidden = false;
 
-      function apply(filter) {
-        rows.forEach(function (row) {
-          var facets = row.getAttribute('data-facet').split(' ');
-          row.hidden = filter !== 'todo' && facets.indexOf(filter) === -1;
+        function select(button, focus) {
+          buttons.forEach(function (b) {
+            var on = b === button;
+            b.setAttribute('aria-checked', on ? 'true' : 'false');
+            b.tabIndex = on ? 0 : -1;
+          });
+          if (focus) button.focus();
+          onSelect(button);
+        }
+
+        buttons.forEach(function (button, i) {
+          button.addEventListener('click', function () { select(button, false); });
+          button.addEventListener('keydown', function (e) {
+            var next = null;
+            if (e.key === 'ArrowRight' || e.key === 'ArrowDown') next = buttons[(i + 1) % buttons.length];
+            else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') next = buttons[(i - 1 + buttons.length) % buttons.length];
+            else if (e.key === 'Home') next = buttons[0];
+            else if (e.key === 'End') next = buttons[buttons.length - 1];
+            if (!next) return;
+            e.preventDefault();
+            select(next, true);
+          });
         });
       }
 
-      function select(button, focus) {
-        buttons.forEach(function (b) {
-          var on = b === button;
-          b.setAttribute('aria-checked', on ? 'true' : 'false');
-          b.tabIndex = on ? 0 : -1;
-        });
-        if (focus) button.focus();
-        var filter = button.getAttribute('data-filter');
-        if (still.matches) { apply(filter); return; }
-        list.classList.add('is-switching');
+      // Cambia el contenido con un fundido breve
+      function swap(container, apply) {
+        if (still.matches) { apply(); return; }
+        container.classList.add('is-switching');
         window.setTimeout(function () {
-          apply(filter);
-          list.classList.remove('is-switching');
+          apply();
+          container.classList.remove('is-switching');
         }, 180);
       }
 
-      buttons.forEach(function (button, i) {
-        button.addEventListener('click', function () { select(button, false); });
-        button.addEventListener('keydown', function (e) {
-          var next = null;
-          if (e.key === 'ArrowRight' || e.key === 'ArrowDown') next = buttons[(i + 1) % buttons.length];
-          else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') next = buttons[(i - 1 + buttons.length) % buttons.length];
-          else if (e.key === 'Home') next = buttons[0];
-          else if (e.key === 'End') next = buttons[buttons.length - 1];
-          if (!next) return;
-          e.preventDefault();
-          select(next, true);
+      // Proyectos: Apps | Trabajos
+      var panelBox = document.querySelector('#proyectos .panels');
+      var panels = Array.prototype.slice.call(panelBox.querySelectorAll('[data-panel]'));
+      function showPanel(name) {
+        panels.forEach(function (panel) { panel.hidden = panel.getAttribute('data-panel') !== name; });
+      }
+      showPanel('apps');
+      segmented(document.querySelector('#proyectos .segmented'), function (button) {
+        swap(panelBox, function () { showPanel(button.getAttribute('data-panel')); });
+      });
+
+      // Experiencia: Todo | Sistemas | Personas
+      var list = document.querySelector('.exp-list');
+      var rows = Array.prototype.slice.call(list.querySelectorAll('.row'));
+      segmented(document.querySelector('#experiencia .segmented'), function (button) {
+        var filter = button.getAttribute('data-filter');
+        swap(list, function () {
+          rows.forEach(function (row) {
+            var facets = row.getAttribute('data-facet').split(' ');
+            row.hidden = filter !== 'todo' && facets.indexOf(filter) === -1;
+          });
         });
       });
 
-      var root = document.documentElement;
+      // Menú móvil
+      var nav = document.querySelector('.nav');
+      var toggle = document.querySelector('.nav-toggle');
+      var narrow = window.matchMedia('(max-width: 734px)');
+      var behind = [document.querySelector('main'), document.querySelector('.footer')];
+
+      function setMenu(open, returnFocus) {
+        nav.classList.toggle('is-open', open);
+        root.classList.toggle('menu-open', open);
+        toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+        toggle.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú');
+        behind.forEach(function (el) { if (el) el.inert = open; });
+        if (!open && returnFocus) toggle.focus();
+      }
+
+      toggle.addEventListener('click', function () { setMenu(!nav.classList.contains('is-open'), false); });
+      document.querySelectorAll('.nav-links a, .nav-brand').forEach(function (a) {
+        a.addEventListener('click', function () { if (nav.classList.contains('is-open')) setMenu(false, false); });
+      });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && nav.classList.contains('is-open')) setMenu(false, true);
+      });
+      function onNarrow() { if (!narrow.matches && nav.classList.contains('is-open')) setMenu(false, false); }
+      if (narrow.addEventListener) narrow.addEventListener('change', onNarrow);
+      else if (narrow.addListener) narrow.addListener(onNarrow);
 
       if (root.classList.contains('motion')) {
         var targets = document.querySelectorAll('.statement-text, .section-title, .stack, .tile, .row, .edu, .subhead, .cert, .contact-actions, .exp-head .segmented');
@@ -1338,7 +1442,7 @@
             });
           });
         }, { rootMargin: '-45% 0px -50% 0px' });
-        ['top', 'sobre', 'web', 'proyectos', 'experiencia', 'certificaciones', 'contacto'].forEach(function (id) {
+        ['top', 'sobre', 'proyectos', 'experiencia', 'certificaciones', 'contacto'].forEach(function (id) {
           var el = document.getElementById(id);
           if (el) spy.observe(el);
         });
